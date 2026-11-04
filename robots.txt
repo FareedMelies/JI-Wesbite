@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://jasmineinitiative.org/sitemap.xml

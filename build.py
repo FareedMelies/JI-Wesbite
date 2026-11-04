@@ -3,7 +3,7 @@
 Run: python3 build.py   (set SITE below to the live domain, e.g. https://example.org)"""
 import re, os, sys
 
-SITE = ""  # e.g. "https://jasmineinitiative.org" -- needed for absolute share-preview URLs
+SITE = "https://jasmineinitiative.org"  # e.g. "https://jasmineinitiative.org" -- needed for absolute share-preview URLs
 ROOT = os.path.dirname(os.path.abspath(__file__))
 src = open(os.path.join(ROOT, "src/site.html"), encoding="utf-8").read()
 
@@ -73,7 +73,7 @@ def fix_links(html, prefix, current=None, absolute=False):
 
 def head(title, desc, prefix, path, dark_img=None, absolute=False):
     a = "/" if absolute else prefix
-    url = (SITE + "/" + path) if SITE else ""
+    url = (SITE + "/" + path + ("/" if path and not path.endswith(".html") else "")) if SITE else ""
     og = ['<meta property="og:site_name" content="Jasmine Initiative">',
           '<meta property="og:type" content="website">',
           '<meta property="og:title" content="%s">' % title,
