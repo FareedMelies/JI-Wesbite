@@ -140,16 +140,9 @@
   .counter .unit{font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-left:.8em}
   .counter .fine{font-size:.82rem;line-height:1.6;color:var(--muted);margin:0;max-width:56ch}
   .shot{margin:0;min-width:0}
-  .shot img{display:block;width:100%;height:auto;background:#1a1a1a;filter:grayscale(1) contrast(1.12)}
+  .shot img{display:block;width:100%;height:auto;background:#1a1a1a}
   .shot figcaption{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:10px;line-height:1.6}
   .shot.wide img{aspect-ratio:16/9;object-fit:cover}
-  #field.color .shot img{filter:none}
-  .switch-row{display:flex;align-items:center;gap:12px;margin:0 0 20px}
-  .switch{position:relative;width:52px;height:30px;padding:0;border:1px solid var(--fg);background:transparent;border-radius:30px;cursor:pointer;flex:none}
-  .switch::after{content:"";position:absolute;inset:-8px}
-  .switch .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--fg);transition:transform .2s}
-  .switch[aria-checked="true"] .knob{transform:translateX(22px)}
-  @media(prefers-reduced-motion:reduce){.switch .knob{transition:none}}
   .shots{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:20px}
   .shots .shot img{aspect-ratio:4/5;object-fit:cover}
   @media(min-width:760px){.shots{grid-template-columns:repeat(4,1fr)}}
@@ -340,7 +333,6 @@
   <section class="sec">
     <div class="wrap" id="field">
       <p class="eyebrow">From the field</p>
-      <div class="switch-row"><button type="button" class="switch" id="colorToggle" role="switch" aria-checked="false" aria-labelledby="colorLabel"><span class="knob"></span></button><span id="colorLabel" class="mono" style="margin:0">Color</span></div>
       <figure class="shot wide">
         <img src="img/well-1-plaque-wide.jpg" width="1600" height="900" loading="lazy" alt="Chuck standing beside the finished first well with the Initiative 001 plaque mounted on it">
         <figcaption>Well 1 with the Initiative 001 plaque. Pakistan.</figcaption>
@@ -564,11 +556,6 @@
   paintLiters();
   setInterval(paintLiters, 60000);
 
-  var ct = document.getElementById("colorToggle");
-  ct.addEventListener("click", function(){
-    var on = document.getElementById("field").classList.toggle("color");
-    ct.setAttribute("aria-checked", String(on));
-  });
 
   var VIEWS = ["home","initiative-one","initiative-two","initiative-three","about","donate"];
   var DARK = ["initiative-one","initiative-two","initiative-three"];

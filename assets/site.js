@@ -42,11 +42,6 @@
   paintLiters();
   setInterval(paintLiters, 60000);
 
-  var ct = document.getElementById("colorToggle");
-  if (ct) ct.addEventListener("click", function(){
-    var on = document.getElementById("field").classList.toggle("color");
-    ct.setAttribute("aria-checked", String(on));
-  });
 
   var btn = document.getElementById("menuBtn"), menu = document.getElementById("menu");
   function setMenu(open){
