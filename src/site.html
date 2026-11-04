@@ -1,0 +1,601 @@
+<title>Jasmine Initiative</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  /* Layout: mobile-first, single column bands. Light pages for donors, dark pages for the initiatives.
+     One red moment per headline, red never used as a background. Committed single look (brand rule), not OS-theme driven. */
+  :root{
+    --ink:#1A1A1A; --paper:#F5F0E8; --black:#0A0A0A; --red:#E02020;
+    --display:'Bebas Neue','Arial Narrow',Impact,sans-serif;
+    --serif:'DM Serif Display',Georgia,serif;
+    --mono:'IBM Plex Mono','Courier New',monospace;
+    --body:'Lora',Georgia,serif;
+    --bg:var(--paper); --fg:var(--ink); --muted:#5F5A52; --line:#D8D3CB; --card:#FBF8F2;
+    color-scheme:light;
+  }
+  body.dark{ --bg:var(--black); --fg:var(--paper); --muted:#A19D95; --line:#262626; --card:#121212; }
+
+  [hidden]{display:none!important}
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
+  body.menu-open{overflow:hidden}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--red);outline-offset:3px}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--black);color:var(--paper);padding:10px 14px;font-family:var(--mono);font-size:.75rem;z-index:100}
+  .skip:focus{left:8px}
+
+  .wrap{width:100%;max-width:1100px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+  /* Header */
+  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+  .bar-in{display:flex;align-items:center;gap:10px;min-height:60px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg);margin-right:auto;min-width:0}
+  .brand svg{width:34px;height:34px;flex:none;--core:var(--bg)}
+  .brand-t{font-family:var(--display);font-size:1.1rem;letter-spacing:.12em;line-height:1.02}
+  .brand-t span{display:block}
+  .brand-t .i{color:var(--red)}
+  .nav-d{display:none;gap:24px;margin-right:12px}
+  .nav-d a{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:8px 0}
+  .nav-d a:hover,[aria-current="page"]{color:var(--red)}
+  .menu-btn{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;background:none;color:var(--fg);border:1px solid var(--line);min-height:44px;padding:0 14px;cursor:pointer}
+  @media(min-width:1020px){.nav-d{display:flex}.menu-btn{display:none}}
+
+  .menu{position:fixed;inset:0;z-index:45;background:var(--bg);display:flex;flex-direction:column;overflow-y:auto;
+    padding:calc(72px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+  .menu a.big{font-family:var(--display);font-size:clamp(2.6rem,12vw,4rem);line-height:1;letter-spacing:.04em;text-decoration:none;padding:.3em 0;border-bottom:1px solid var(--line)}
+  .menu .follow{margin-top:28px}
+
+  /* Type */
+  .eyebrow{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-weight:500;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin:0 0 18px}
+  .eyebrow::after{content:"";width:44px;height:1px;background:var(--red);flex:none}
+  .h1{font-family:var(--display);font-weight:400;font-size:clamp(2.7rem,11.5vw,6.75rem);line-height:.95;letter-spacing:.03em;margin:0 0 24px;text-wrap:balance}
+  .h1 em{font-style:normal;color:var(--red)}
+  .h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,5.2vw,2.8rem);line-height:1.12;margin:0 0 20px;max-width:24ch;text-wrap:balance}
+  .lede{font-family:var(--serif);font-size:clamp(1.2rem,3.6vw,1.7rem);line-height:1.35;max-width:34ch;margin:0 0 32px}
+  .copy{max-width:62ch;font-size:1.02rem;margin:0 0 1.1em}
+  .mono{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  /* Bands */
+  .sec{padding-block:clamp(56px,9vw,104px)}
+  .sec + .sec{border-top:1px solid var(--line)}
+  .band-dark{background:var(--black);color:var(--paper);--fg:var(--paper);--muted:#A19D95;--line:#2a2a2a}
+  .hero{position:relative;overflow:hidden;overflow:clip;padding-block:clamp(40px,9vw,112px)}
+  .hero .wrap{position:relative;z-index:1}
+  .hero-flower{position:absolute;right:-22%;top:-8%;width:min(78vw,560px);height:auto;opacity:.07;pointer-events:none;--core:var(--bg)}
+
+  /* Buttons + chips */
+  .cta{display:flex;flex-direction:column;gap:14px;align-items:stretch;max-width:420px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;background:var(--red);color:var(--paper);font-family:var(--mono);font-weight:500;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:1px solid var(--red);cursor:pointer}
+  .btn:hover{filter:brightness(.92)}
+  .btn.is-off{background:transparent;color:var(--muted);border:1px dashed var(--muted);cursor:not-allowed;filter:none}
+  .socials{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--fg);font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--fg)}
+  a.chip:hover{background:var(--fg);color:var(--bg)}
+  .chip.is-off{border:1px dashed var(--muted);color:var(--muted)}
+  .follow-label{margin:22px 0 10px}
+
+  /* Ticker */
+  .ticker{background:var(--black);color:var(--paper);overflow:hidden;border-block:1px solid #1d1d1d}
+  .track{display:flex;width:max-content;animation:slide 40s linear infinite}
+  .track span{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:15px 0;white-space:nowrap}
+  .track span::after{content:"/";color:var(--red);padding:0 26px}
+  @keyframes slide{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.track{animation:none}}
+
+  /* Cards */
+  .cards{display:grid;gap:16px;grid-template-columns:1fr}
+  @media(min-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+  .card{display:flex;flex-direction:column;gap:14px;min-width:0;background:var(--black);color:var(--paper);--fg:var(--paper);--muted:#8F8B83;--line:#262626;padding:28px 24px;border:1px solid #1f1f1f;text-decoration:none}
+  .card:hover{border-color:#444}
+  .card h3{font-family:var(--display);font-weight:400;font-size:3.2rem;line-height:1;letter-spacing:.04em;margin:0}
+  .card p{margin:0;color:#B9B5AD;font-size:.97rem}
+  .card .go{margin-top:auto;padding-top:10px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+
+  /* Redacted record */
+  .rd{display:grid;grid-template-columns:7rem 1fr;gap:8px 12px;margin:4px 0 0;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+  .rd dt{color:var(--muted)}
+  .rd dd{margin:0;min-width:0}
+  .x{display:inline-block;width:var(--w,8ch);max-width:100%;height:.95em;vertical-align:-.12em;background:#2e2e2e}
+
+  /* Fact lists */
+  .facts{margin:0}
+  .facts div{display:grid;grid-template-columns:minmax(7.5rem,32%) 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .facts dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding-top:.35em}
+  .facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
+
+  .attrib{display:flex;flex-direction:column;gap:4px;margin:0 0 28px;font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .attrib span{color:var(--fg)}
+  .pull{font-family:var(--serif);font-style:italic;font-size:clamp(1.6rem,5.5vw,2.8rem);line-height:1.2;margin:0 0 20px;max-width:24ch;text-wrap:balance;border-left:3px solid var(--red);padding-left:20px}
+  .pull-sub{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0;padding-left:23px;max-width:46ch;line-height:1.7}
+
+  .trio{display:grid;gap:28px;grid-template-columns:1fr}
+  @media(min-width:760px){.trio{grid-template-columns:repeat(3,1fr);gap:36px}}
+  .trio > div{border-top:1px solid var(--line);padding-top:18px;min-width:0}
+  .trio h3{font-family:var(--display);font-weight:400;font-size:2.1rem;letter-spacing:.04em;line-height:1;margin:0 0 10px}
+  .trio p{margin:0;color:var(--muted);font-size:.97rem}
+
+  .receipt{border:1px dashed var(--muted);background:var(--card);padding:22px;max-width:520px;font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase}
+  .receipt h4{margin:0 0 14px;font-weight:500;font-size:.72rem;letter-spacing:.2em;color:var(--muted)}
+  .receipt .rl{display:flex;gap:8px;align-items:baseline;line-height:2}
+  .receipt .rl i{flex:1;border-bottom:1px dotted var(--muted);min-width:12px}
+
+  .two{display:grid;gap:36px;grid-template-columns:1fr}
+  @media(min-width:860px){.two{grid-template-columns:1fr 1fr;gap:64px}}
+  .two > *{min-width:0}
+
+  /* Footer */
+  .foot{background:var(--black);color:var(--paper);--fg:var(--paper);--muted:#8F8B83;--line:#262626;padding-block:48px 36px}
+  .foot-in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px}
+  .foot .brand-t{font-size:1.6rem}
+  .foot .brand svg{--core:var(--black);width:40px;height:40px}
+  .foot p{margin:0;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#8F8B83;line-height:2;max-width:46ch}
+  .foot nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:24px}
+  .foot nav a{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--paper);padding:8px 0}
+  .foot nav a:hover{color:var(--red)}
+  .counter{margin-top:8px;padding-top:28px;border-top:1px solid var(--line);max-width:640px}
+  .counter .count{font-family:var(--display);font-size:clamp(3.6rem,17vw,7.5rem);line-height:.95;letter-spacing:.03em;margin:6px 0 12px;font-variant-numeric:tabular-nums}
+  .counter .unit{font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-left:.8em}
+  .counter .fine{font-size:.82rem;line-height:1.6;color:var(--muted);margin:0;max-width:56ch}
+  .shot{margin:0;min-width:0}
+  .shot img{display:block;width:100%;height:auto;background:#1a1a1a;filter:grayscale(1) contrast(1.12)}
+  .shot figcaption{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:10px;line-height:1.6}
+  .shot.wide img{aspect-ratio:16/9;object-fit:cover}
+  #field.color .shot img{filter:none}
+  .switch-row{display:flex;align-items:center;gap:12px;margin:0 0 20px}
+  .switch{position:relative;width:52px;height:30px;padding:0;border:1px solid var(--fg);background:transparent;border-radius:30px;cursor:pointer;flex:none}
+  .switch::after{content:"";position:absolute;inset:-8px}
+  .switch .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--fg);transition:transform .2s}
+  .switch[aria-checked="true"] .knob{transform:translateX(22px)}
+  @media(prefers-reduced-motion:reduce){.switch .knob{transition:none}}
+  .shots{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:20px}
+  .shots .shot img{aspect-ratio:4/5;object-fit:cover}
+  @media(min-width:760px){.shots{grid-template-columns:repeat(4,1fr)}}
+  .foot .dedication{font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,3.4vw,1.4rem);line-height:1.4;letter-spacing:0;text-transform:none;color:var(--paper);max-width:42ch;margin:40px 0 0;padding-top:28px;border-top:1px solid #262626;text-wrap:balance}
+  .foot .copyright{margin-top:22px}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="flower" viewBox="0 0 40 40">
+    <g fill="#E02020">
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".9"/>
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".9" transform="rotate(45 20 20)"/>
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".85" transform="rotate(90 20 20)"/>
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".85" transform="rotate(135 20 20)"/>
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".8" transform="rotate(180 20 20)"/>
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".8" transform="rotate(225 20 20)"/>
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".75" transform="rotate(270 20 20)"/>
+      <ellipse cx="20" cy="10" rx="4" ry="8" opacity=".75" transform="rotate(315 20 20)"/>
+    </g>
+    <circle cx="20" cy="20" r="5" style="fill:var(--core,#F5F0E8)"/>
+    <circle cx="20" cy="20" r="3" fill="#E02020"/>
+  </symbol>
+</svg>
+
+<a class="skip" href="#content">Skip to content</a>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="brand" href="#home" data-nav aria-label="Jasmine Initiative home">
+      <svg aria-hidden="true"><use href="#flower"/></svg>
+      <span class="brand-t"><span>JASMINE</span><span class="i">INITIATIVE</span></span>
+    </a>
+    <nav class="nav-d" aria-label="Primary">
+      <a href="#home" data-nav>Home</a>
+      <a href="#initiative-one" data-nav>Initiative 001</a>
+      <a href="#initiative-two" data-nav>Initiative 002</a>
+      <a href="#initiative-three" data-nav>Initiative 003</a>
+      <a href="#about" data-nav>About</a>
+    </nav>
+    <a class="btn" style="min-height:44px;padding:0 18px" href="#donate" data-nav>Donate</a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <a class="big" href="#home" data-nav>Home</a>
+  <a class="big" href="#initiative-one" data-nav>Initiative 001</a>
+  <a class="big" href="#initiative-two" data-nav>Initiative 002</a>
+  <a class="big" href="#initiative-three" data-nav>Initiative 003</a>
+  <a class="big" href="#about" data-nav>About</a>
+  <a class="big" href="#donate" data-nav>Donate</a>
+  <div class="follow">
+    <p class="mono" style="margin:0 0 10px">Follow along</p>
+    <div class="socials" data-socials></div>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- HOME -->
+<main id="view-home" data-view="home">
+  <section class="hero">
+    <svg class="hero-flower" viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg>
+    <div class="wrap">
+      <p class="eyebrow">501(c)(3) Humanitarian Nonprofit &middot; Est. 2026</p>
+      <h1 class="h1">Follow the story.<br>Change the <em>ending.</em></h1>
+      <p class="lede">Humanitarian work you can watch from start to finish, with every dollar tracked.</p>
+      <div class="cta">
+        <span data-donate></span>
+      </div>
+      <p class="mono follow-label">Follow along</p>
+      <div class="socials" data-socials></div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="track">
+      <span>Full transparency.</span><span>On the ground. Firsthand.</span><span>IRS-recognized 501(c)(3)</span><span>Open books.</span>
+      <span>Full transparency.</span><span>On the ground. Firsthand.</span><span>IRS-recognized 501(c)(3)</span><span>Open books.</span>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="eyebrow">The work</p>
+      <h2 class="h2">Our work is built on initiatives.</h2>
+      <p class="copy">Each initiative has one specific goal or target. Breaking the work down this way helps us reach those targets, and it lets us track and allocate every dollar with full transparency. We use every resource as efficiently as we can, out of respect for our donors and the communities we serve.</p>
+      <div class="cards" style="margin-top:36px">
+        <a class="card" href="#initiative-one" data-nav>
+          <span class="mono">Initiative 001</span>
+          <h3>Clean water</h3>
+          <p>Clean water access in Pakistan, documented on camera and tracked to the dollar.</p>
+          <span class="go">See the work &rarr;</span>
+        </a>
+        <a class="card" href="#initiative-two" data-nav>
+          <span class="mono">Initiative 002</span>
+          <h3>Underway</h3>
+          <dl class="rd">
+            <div style="display:contents"><dt>Where</dt><dd>Punjab, Pakistan</dd></div>
+            <div style="display:contents"><dt>Village</dt><dd><span class="x" style="--w:9ch"></span></dd></div>
+            <div style="display:contents"><dt>Project</dt><dd><span class="x" style="--w:12ch"></span></dd></div>
+            <div style="display:contents"><dt>Reveal</dt><dd>Soon</dd></div>
+          </dl>
+          <span class="go">What we can say so far &rarr;</span>
+        </a>
+        <a class="card" href="#initiative-three" data-nav>
+          <span class="mono">Initiative 003</span>
+          <h3>In discussion</h3>
+          <dl class="rd">
+            <div style="display:contents"><dt>Where</dt><dd><span class="x" style="--w:10ch"></span></dd></div>
+            <div style="display:contents"><dt>Project</dt><dd><span class="x" style="--w:12ch"></span></dd></div>
+            <div style="display:contents"><dt>Status</dt><dd>Talks underway</dd></div>
+            <div style="display:contents"><dt>Update</dt><dd>Soon</dd></div>
+          </dl>
+          <span class="go">What we can say so far &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <blockquote class="pull" style="margin-inline:0">Great storytelling doesn't manufacture empathy. It removes distance.</blockquote>
+      <p class="pull-sub">It doesn't focus on need. It focuses on possibility.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="eyebrow">How we work</p>
+      <div class="trio" style="margin-top:28px">
+        <div><h3>Show the work.</h3><p>Cameras roll from day one. You see each initiative as it happens.</p></div>
+        <div><h3>Show the receipts.</h3><p>Every dollar is tracked and every expense is posted. No mystery overhead.</p></div>
+        <div><h3>Show the transformation.</h3><p>You see what changed and who it changed for. Nothing hidden.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec band-dark">
+    <div class="wrap">
+      <h2 class="h1" style="margin-bottom:16px">Watch it <em>happen.</em></h2>
+      <p class="lede" style="max-width:30ch">New updates post first on social. Follow along, or give directly.</p>
+      <div class="cta" style="margin-bottom:8px"><span data-donate></span></div>
+      <p class="mono follow-label">Follow along</p>
+      <div class="socials" data-socials></div>
+    </div>
+  </section>
+</main>
+
+<!-- WELLS -->
+<main id="view-initiative-one" data-view="initiative-one" hidden>
+  <section class="sec" style="border-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Initiative 001</p>
+      <h1 class="h1">Clean water, <em>documented.</em></h1>
+      <p class="lede">Our first initiative puts clean water access in Pakistan, on camera and tracked to the dollar.</p>
+      <div class="counter">
+        <p class="mono" style="margin:0">Clean water delivered</p>
+        <p class="count"><span id="liters">0</span><span class="unit">liters*</span></p>
+        <p class="fine">*Estimate. Calculated from each well's completion date, the number of people it serves, and an assumed 50 liters per person per day.</p>
+      </div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">The facts</p>
+        <dl class="facts">
+          <div><dt>Initiative</dt><dd>001</dd></div>
+          <div><dt>Focus</dt><dd>Clean water access</dd></div>
+          <div><dt>Location</dt><dd>Pakistan</dd></div>
+          <div><dt>Status</dt><dd>In progress. Some wells already completed.</dd></div>
+          <div><dt>Updates</dt><dd>Posted first on social</dd></div>
+        </dl>
+      </div>
+      <div>
+        <p class="eyebrow">Where the money goes</p>
+        <p class="copy">Every expense on this initiative gets a receipt. The itemized costs will live here.</p>
+        <div class="receipt">
+          <h4>Receipt log &middot; Initiative 001</h4>
+          <div class="rl">Construction<i></i>Posting soon</div>
+          <div class="rl">Crew<i></i>Posting soon</div>
+          <div class="rl">Materials<i></i>Posting soon</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap" id="field">
+      <p class="eyebrow">From the field</p>
+      <div class="switch-row"><button type="button" class="switch" id="colorToggle" role="switch" aria-checked="false" aria-labelledby="colorLabel"><span class="knob"></span></button><span id="colorLabel" class="mono" style="margin:0">Color</span></div>
+      <figure class="shot wide">
+        <img src="img/well-1-plaque-wide.jpg" width="1600" height="900" loading="lazy" alt="Chuck standing beside the finished first well with the Initiative 001 plaque mounted on it">
+        <figcaption>Well 1 with the Initiative 001 plaque. Pakistan.</figcaption>
+      </figure>
+      <div class="shots">
+        <figure class="shot"><img src="img/night-work.jpg" width="800" height="1778" loading="lazy" alt="Two crew members working in the dark beside a block wall, with a hose running into the ground"><figcaption>The crew working into the night. Pakistan.</figcaption></figure>
+        <figure class="shot"><img src="img/drilling-rig.jpg" width="800" height="1778" loading="lazy" alt="Chuck standing next to the drilling rig and its steel pipes at a well site"><figcaption>The drilling rig on site. Pakistan.</figcaption></figure>
+        <figure class="shot"><img src="img/well-1-water.jpg" width="800" height="1422" loading="lazy" alt="The finished first well with its plaque and water running out of the base"><figcaption>Well 1, water running. Pakistan.</figcaption></figure>
+        <figure class="shot"><img src="img/well-2.jpg" width="800" height="1778" loading="lazy" alt="The second well site with a pump head, green pipes and a stacked block base"><figcaption>Well 2. Pakistan.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <h2 class="h2">Help fund the next one.</h2>
+      <div class="cta"><a class="btn" href="#donate" data-nav>Give to Jasmine Initiative</a></div>
+    </div>
+  </section>
+</main>
+
+<!-- INITIATIVE 002 -->
+<main id="view-initiative-two" data-view="initiative-two" hidden>
+  <section class="sec" style="border-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Initiative 002</p>
+      <h1 class="h1">Already <em>underway.</em></h1>
+      <p class="lede">We started a new project in a village in Punjab, Pakistan. More information will be posted soon.</p>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <p class="eyebrow">File</p>
+      <dl class="rd" style="grid-template-columns:minmax(6rem,9rem) 1fr;font-size:.82rem;max-width:560px;gap:14px 16px">
+        <div style="display:contents"><dt>Country</dt><dd>Pakistan</dd></div>
+        <div style="display:contents"><dt>Province</dt><dd>Punjab</dd></div>
+        <div style="display:contents"><dt>Village</dt><dd><span class="x" style="--w:11ch"></span></dd></div>
+        <div style="display:contents"><dt>Project</dt><dd><span class="x" style="--w:16ch"></span></dd></div>
+        <div style="display:contents"><dt>Budget</dt><dd><span class="x" style="--w:8ch"></span></dd></div>
+        <div style="display:contents"><dt>Status</dt><dd>In progress</dd></div>
+        <div style="display:contents"><dt>Reveal</dt><dd>Soon</dd></div>
+      </dl>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <h2 class="h2">Follow along for more.</h2>
+      <p class="copy">The full story posts on social before anywhere else.</p>
+      <div class="cta"><span data-follow></span></div>
+      <p class="mono follow-label">All channels</p>
+      <div class="socials" data-socials></div>
+    </div>
+  </section>
+</main>
+
+<!-- INITIATIVE 003 -->
+<main id="view-initiative-three" data-view="initiative-three" hidden>
+  <section class="sec" style="border-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Initiative 003</p>
+      <h1 class="h1">Talks are <em>underway.</em></h1>
+      <p class="lede">We've begun discussions for Initiative 003. We'll have an update soon.</p>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <p class="eyebrow">File</p>
+      <dl class="rd" style="grid-template-columns:minmax(6rem,9rem) 1fr;font-size:.82rem;max-width:560px;gap:14px 16px">
+        <div style="display:contents"><dt>Country</dt><dd><span class="x" style="--w:10ch"></span></dd></div>
+        <div style="display:contents"><dt>Partners</dt><dd><span class="x" style="--w:14ch"></span></dd></div>
+        <div style="display:contents"><dt>Project</dt><dd><span class="x" style="--w:16ch"></span></dd></div>
+        <div style="display:contents"><dt>Status</dt><dd>In discussion</dd></div>
+        <div style="display:contents"><dt>Update</dt><dd>Soon</dd></div>
+      </dl>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <h2 class="h2">Follow along for more.</h2>
+      <p class="copy">The announcement posts on social before anywhere else.</p>
+      <div class="cta"><span data-follow></span></div>
+      <p class="mono follow-label">All channels</p>
+      <div class="socials" data-socials></div>
+    </div>
+  </section>
+</main>
+
+<!-- ABOUT -->
+<main id="view-about" data-view="about" hidden>
+  <section class="sec" style="border-top:0">
+    <div class="wrap">
+      <p class="eyebrow">About</p>
+      <h1 class="h1">&ldquo;Be the <em>change</em> you want to see in the world.&rdquo;</h1>
+      <p class="attrib"><s>&mdash; Gandhi (I think)</s><span>&mdash; Chuck</span></p>
+      <p class="lede" style="margin:8px 0 0">Jasmine Initiative funds humanitarian projects and shows every step on camera, from the first dollar to the finished work.</p>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">From Chuck</p>
+        <p class="copy">I started a company in college with no outside investors, and I sold it. Then I bought land and lived off the grid, isolated in the middle of the woods in a tiny house, for two years. Then I traveled as far as I could.</p>
+        <p class="copy">I've seen so much of the world, and I've seen both ends of many different spectrums. In my search for purpose and fulfillment, I kept running into the same truth: neither comes from serving yourself. Both come from serving others. The biggest thing you can do for yourself will still fall short of even the smallest thing you do for someone else.</p>
+        <p class="copy">With great privilege, which I feel I've been afforded at a very young age, comes great responsibility. Jasmine Initiative is one of the many answers to how I choose to live that privilege and lead in my own life. It's also my attempt to answer a question I couldn't shake: how the hell do I make my short time on this planet mean something?</p>
+      </div>
+      <div>
+        <p class="eyebrow">The paperwork</p>
+        <dl class="facts">
+          <div><dt>Legal name</dt><dd>Jasmine Initiative Inc</dd></div>
+          <div><dt>EIN</dt><dd>41-4656473</dd></div>
+          <div><dt>Status</dt><dd>501(c)(3) public charity, recognized by the IRS</dd></div>
+          <div><dt>Effective</dt><dd>February 12, 2026</dd></div>
+          <div><dt>Gifts</dt><dd>Tax-deductible to the extent allowed by law</dd></div>
+          <div><dt>Mail</dt><dd>PO Box 72012, Marietta, GA 30007</dd></div>
+          <div><dt>Affiliations</dt><dd>Jasmine Initiative is not politically or religiously affiliated.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- DONATE -->
+<main id="view-donate" data-view="donate" hidden>
+  <section class="sec" style="border-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Give</p>
+      <h1 class="h1">Fund the <em>work.</em></h1>
+      <p class="lede">Every gift goes to Jasmine Initiative Inc, a registered 501(c)(3). You can watch where it goes.</p>
+      <div class="cta"><span data-donate></span></div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">What you get</p>
+        <dl class="facts">
+          <div><dt>Receipts</dt><dd>Every expense is tracked and posted.</dd></div>
+          <div><dt>Tax</dt><dd>Gifts are tax-deductible to the extent allowed by law.</dd></div>
+          <div><dt>Letter</dt><dd>Gifts of $250 or more get a written acknowledgment.</dd></div>
+          <div><dt>EIN</dt><dd>41-4656473</dd></div>
+        </dl>
+      </div>
+      <div>
+        <p class="eyebrow">Give by check</p>
+        <p class="copy">Make checks payable to Jasmine Initiative Inc and mail them to:</p>
+        <p class="copy" style="font-family:var(--mono);font-size:.9rem;line-height:1.8">Jasmine Initiative Inc<br>PO Box 72012<br>Marietta, GA 30007</p>
+        <p class="copy" style="margin-top:28px"><a href="#initiative-one" data-nav style="font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase">See what Initiative 001 funded &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div>
+        <div class="brand" style="margin:0 0 20px">
+          <svg aria-hidden="true"><use href="#flower"/></svg>
+          <span class="brand-t"><span>JASMINE</span><span class="i">INITIATIVE</span></span>
+        </div>
+        <p>Jasmine Initiative Inc &middot; EIN 41-4656473<br>PO Box 72012 &middot; Marietta, GA 30007<br>501(c)(3) public charity. Contributions are tax-deductible to the extent allowed by law.</p>
+      </div>
+      <div class="socials" data-socials style="align-content:flex-start"></div>
+    </div>
+    <nav aria-label="Footer">
+      <a href="#home" data-nav>Home</a>
+      <a href="#initiative-one" data-nav>Initiative 001</a>
+      <a href="#initiative-two" data-nav>Initiative 002</a>
+      <a href="#initiative-three" data-nav>Initiative 003</a>
+      <a href="#about" data-nav>About</a>
+      <a href="#donate" data-nav>Donate</a>
+    </nav>
+    <p class="dedication">For my first love, the woman who taught me empathy, selflessness, and humanity: my beautiful mother.</p>
+    <p class="copyright">&copy; 2026 Jasmine Initiative Inc. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // Paste real links here. Anything left blank shows as an inactive chip.
+  var LINKS = { donate: "", instagram: "https://www.instagram.com/jasmineinitiative/", tiktok: "https://www.tiktok.com/@jasmineinitiative" };
+  var SOCIAL = [["instagram","Instagram"],["tiktok","TikTok"]];
+
+  document.querySelectorAll("[data-socials]").forEach(function(el){
+    SOCIAL.forEach(function(s){
+      var url = LINKS[s[0]], n;
+      if (url) { n = document.createElement("a"); n.href = url; n.target = "_blank"; n.rel = "noopener noreferrer"; }
+      else { n = document.createElement("span"); n.className = "is-off"; n.setAttribute("aria-disabled","true"); n.title = "Link coming soon"; }
+      n.classList.add("chip");
+      n.textContent = s[1];
+      el.appendChild(n);
+    });
+  });
+
+  document.querySelectorAll("[data-donate]").forEach(function(el){
+    var n;
+    if (LINKS.donate) { n = document.createElement("a"); n.href = LINKS.donate; n.target = "_blank"; n.rel = "noopener noreferrer"; n.className = "btn"; n.textContent = "Donate now →"; }
+    else { n = document.createElement("span"); n.className = "btn is-off"; n.setAttribute("aria-disabled","true"); n.textContent = "Online giving opens soon"; }
+    el.replaceWith(n);
+  });
+
+  document.querySelectorAll("[data-follow]").forEach(function(el){
+    var n;
+    if (LINKS.instagram) { n = document.createElement("a"); n.href = LINKS.instagram; n.target = "_blank"; n.rel = "noopener noreferrer"; n.className = "btn"; n.textContent = "Follow along on Instagram →"; }
+    else { n = document.createElement("span"); n.className = "btn is-off"; n.setAttribute("aria-disabled","true"); n.textContent = "Follow along"; }
+    el.replaceWith(n);
+  });
+
+  // Estimate inputs. 50 L per person per day is the WHO intermediate-access figure (water piped to the home).
+  var WELLS = [{ done: "2026-10-20", people: 6 }, { done: "2026-10-25", people: 2 }];
+  var LPCD = 50;
+  function paintLiters(){
+    var now = Date.now(), total = 0;
+    WELLS.forEach(function(w){
+      var start = new Date(w.done + "T00:00:00").getTime();
+      total += w.people * LPCD * Math.max(0, (now - start) / 86400000);
+    });
+    var el = document.getElementById("liters");
+    if (el) el.textContent = Math.floor(total).toLocaleString("en-US");
+  }
+  paintLiters();
+  setInterval(paintLiters, 60000);
+
+  var ct = document.getElementById("colorToggle");
+  ct.addEventListener("click", function(){
+    var on = document.getElementById("field").classList.toggle("color");
+    ct.setAttribute("aria-checked", String(on));
+  });
+
+  var VIEWS = ["home","initiative-one","initiative-two","initiative-three","about","donate"];
+  var DARK = ["initiative-one","initiative-two","initiative-three"];
+  var btn = document.getElementById("menuBtn"), menu = document.getElementById("menu");
+
+  function setMenu(open){
+    menu.hidden = !open;
+    btn.setAttribute("aria-expanded", String(open));
+    btn.textContent = open ? "Close" : "Menu";
+    document.body.classList.toggle("menu-open", open);
+  }
+  btn.addEventListener("click", function(){ setMenu(menu.hidden); });
+  document.querySelectorAll("a[data-nav]").forEach(function(a){ a.addEventListener("click", function(){ setMenu(false); }); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+
+  function route(){
+    var h = location.hash.replace("#","");
+    if (VIEWS.indexOf(h) < 0) h = "home";
+    VIEWS.forEach(function(v){ document.getElementById("view-" + v).hidden = (v !== h); });
+    document.body.classList.toggle("dark", DARK.indexOf(h) >= 0);
+    document.querySelectorAll("a[data-nav]").forEach(function(a){
+      if (a.getAttribute("href") === "#" + h && !a.classList.contains("btn")) a.setAttribute("aria-current","page");
+      else a.removeAttribute("aria-current");
+    });
+    setMenu(false);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+  window.addEventListener("hashchange", route);
+  route();
+</script>
