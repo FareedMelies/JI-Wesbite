@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Builds the multi-page static site from src/site.html (the single-file source).
 Run: python3 build.py   (set SITE below to the live domain, e.g. https://example.org)"""
-import re, os, sys
+import re, os, sys, hashlib
 
 SITE = "https://jasmineinitiative.org"  # e.g. "https://jasmineinitiative.org" -- needed for absolute share-preview URLs
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +33,8 @@ script += '''  var btn = document.getElementById("menuBtn"), menu = document.get
   btn.addEventListener("click", function(){ setMenu(menu.hidden); });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
 '''
+
+VER = hashlib.md5((css + script).encode("utf-8")).hexdigest()[:8]  # cache-buster so edits show up right away
 
 PAGES = [
   # key, folder, title, description, dark, nav label
@@ -86,8 +88,8 @@ def head(title, desc, prefix, path, dark_img=None, absolute=False):
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
             '<title>%s</title>\n<meta name="description" content="%s">\n<meta name="theme-color" content="#0A0A0A">\n%s\n'
-            '<link rel="icon" href="%s">\n%s\n<link rel="stylesheet" href="%sassets/site.css">\n</head>\n') % (
-            title, desc, "\n".join(og), FAVICON, fonts, a)
+            '<link rel="icon" href="%s">\n%s\n<link rel="stylesheet" href="%sassets/site.css?v=%s">\n</head>\n') % (
+            title, desc, "\n".join(og), FAVICON, fonts, a, VER)
 
 def write(path, text):
     full = os.path.join(ROOT, path)
@@ -104,7 +106,7 @@ for key, folder, title, desc, dark in PAGES:
     main = '<main id="main">' + main + "</main>"
     main = main.replace('src="img/', 'src="%simg/' % prefix)
     body = (sprite + '<a class="skip" href="#main">Skip to content</a>\n' + header + "\n" + main + "\n" + footer +
-            '<script src="%sassets/site.js"></script>\n' % prefix)
+            '<script src="%sassets/site.js?v=%s"></script>\n' % (prefix, VER))
     body = fix_links(body, prefix, current=key)
     page = head(title, desc, prefix, folder) + '<body%s>\n%s</body>\n</html>\n' % (' class="dark"' if dark else "", body)
     write((folder + "/" if folder else "") + "index.html", page)
@@ -114,7 +116,7 @@ nf_main = ('<main id="main"><section class="sec" style="border-top:0"><div class
            '<p class="eyebrow">404</p><h1 class="h1">Page not <em>found.</em></h1>'
            '<p class="lede">That page doesn\'t exist, or it moved.</p>'
            '<div class="cta"><a class="btn" href="/">Back to home</a></div></div></section></main>\n')
-body = sprite + '<a class="skip" href="#main">Skip to content</a>\n' + header + "\n" + nf_main + footer + '<script src="/assets/site.js"></script>\n'
+body = sprite + '<a class="skip" href="#main">Skip to content</a>\n' + header + "\n" + nf_main + footer + '<script src="/assets/site.js?v=' + VER + '"></script>\n'
 body = fix_links(body, "", absolute=True)
 h = head("Page not found | Jasmine Initiative", "Page not found.", "", "404.html", absolute=True)
 h = h.replace('<meta name="description"', '<meta name="robots" content="noindex">\n<meta name="description"')
