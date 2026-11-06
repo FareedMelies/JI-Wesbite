@@ -11,7 +11,11 @@
   }
   body.dark{ --bg:var(--black); --fg:var(--paper); --muted:#A19D95; --line:#262626; --card:#121212; }
 
-  [hidden]{display:none!important}
+  .give{max-width:560px;margin-top:32px}
+.give dbox-widget{display:block;min-height:420px}
+.give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
+.give-note a{text-decoration:underline;text-underline-offset:3px}
+[hidden]{display:none!important}
   *,*::before,*::after{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
   body.menu-open{overflow:hidden}

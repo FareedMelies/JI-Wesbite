@@ -17,7 +17,11 @@
   }
   body.dark{ --bg:var(--black); --fg:var(--paper); --muted:#A19D95; --line:#262626; --card:#121212; }
 
-  [hidden]{display:none!important}
+  .give{max-width:560px;margin-top:32px}
+.give dbox-widget{display:block;min-height:420px}
+.give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
+.give-note a{text-decoration:underline;text-underline-offset:3px}
+[hidden]{display:none!important}
   *,*::before,*::after{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
   body.menu-open{overflow:hidden}
@@ -211,7 +215,7 @@
       <h1 class="h1">Follow the story.<br>Change the <em>ending.</em></h1>
       <p class="lede">Humanitarian work you can watch from start to finish, with every dollar tracked.</p>
       <div class="cta">
-        <span data-donate></span>
+        <a class="btn" href="#donate" data-nav>Donate now &rarr;</a>
       </div>
       <p class="mono follow-label">Follow along</p>
       <div class="socials" data-socials></div>
@@ -285,7 +289,7 @@
     <div class="wrap">
       <h2 class="h1" style="margin-bottom:16px">Watch it <em>happen.</em></h2>
       <p class="lede" style="max-width:30ch">New updates post first on social. Follow along, or give directly.</p>
-      <div class="cta" style="margin-bottom:8px"><span data-donate></span></div>
+      <div class="cta" style="margin-bottom:8px"><a class="btn" href="#donate" data-nav>Donate now &rarr;</a></div>
       <p class="mono follow-label">Follow along</p>
       <div class="socials" data-socials></div>
     </div>
@@ -442,6 +446,7 @@
         <dl class="facts">
           <div><dt>Legal name</dt><dd>Jasmine Initiative Inc</dd></div>
           <div><dt>EIN</dt><dd>41-4656473</dd></div>
+          <div><dt>Contact</dt><dd><a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a></dd></div>
           <div><dt>Status</dt><dd>501(c)(3) public charity, recognized by the IRS</dd></div>
           <div><dt>Effective</dt><dd>February 12, 2026</dd></div>
           <div><dt>Gifts</dt><dd>Tax-deductible to the extent allowed by law</dd></div>
@@ -460,7 +465,12 @@
       <p class="eyebrow">Give</p>
       <h1 class="h1">Fund the <em>work.</em></h1>
       <p class="lede">Every gift goes to Jasmine Initiative Inc, a registered 501(c)(3). You can watch where it goes.</p>
-      <div class="cta"><span data-donate></span></div>
+      <div class="give">
+        <script type="module" src="https://donorbox.org/widgets.js" async></script>
+        <dbox-widget campaign="donate-to-jasmine-initiative" type="donation_form" enable-auto-scroll="true"></dbox-widget>
+        <p class="give-note">Jasmine Initiative, Inc. is a 501(c)(3) nonprofit organization. Contributions are tax-deductible to the extent allowed by law. Our EIN is 41-4656473. No goods or services are provided in exchange for your gift.</p>
+        <p class="give-note">To change or cancel a monthly gift, use Donor Login in the form or email <a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a>. If the form does not load, <a href="https://donorbox.org/donate-to-jasmine-initiative" target="_blank" rel="noopener noreferrer">give here instead</a>.</p>
+      </div>
     </div>
   </section>
   <section class="sec">
@@ -472,6 +482,7 @@
           <div><dt>Tax</dt><dd>Gifts are tax-deductible to the extent allowed by law.</dd></div>
           <div><dt>Letter</dt><dd>Gifts of $250 or more get a written acknowledgment.</dd></div>
           <div><dt>EIN</dt><dd>41-4656473</dd></div>
+          <div><dt>Contact</dt><dd><a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a></dd></div>
         </dl>
       </div>
       <div>
@@ -494,7 +505,7 @@
           <svg aria-hidden="true"><use href="#flower"/></svg>
           <span class="brand-t"><span>JASMINE</span><span class="i">INITIATIVE</span></span>
         </div>
-        <p>Jasmine Initiative Inc &middot; EIN 41-4656473<br>PO Box 72012 &middot; Marietta, GA 30007<br>501(c)(3) public charity. Contributions are tax-deductible to the extent allowed by law.</p>
+        <p>Jasmine Initiative Inc &middot; EIN 41-4656473<br>PO Box 72012 &middot; Marietta, GA 30007<br><a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a><br>501(c)(3) public charity. Contributions are tax-deductible to the extent allowed by law.</p>
       </div>
       <div class="socials" data-socials style="align-content:flex-start"></div>
     </div>
