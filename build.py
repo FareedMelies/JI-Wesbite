@@ -43,16 +43,18 @@ PAGES = [
   ("initiative-one", "initiative-001", "Initiative 001: Clean water, documented | Jasmine Initiative",
    "Our first initiative puts clean water access in Pakistan, on camera and tracked to the dollar.", True),
   ("initiative-two", "initiative-002", "Initiative 002 | Jasmine Initiative",
-   "Initiative 002: work has begun. More soon.", True),
+   "Initiative 002: already started. More soon.", True),
   ("initiative-three", "initiative-003", "Initiative 003 | Jasmine Initiative",
    "Initiative 003 is in its final stages before we begin. More soon.", True),
   ("about", "about", "About | Jasmine Initiative",
    "Jasmine Initiative funds humanitarian projects and shows every step on camera, from the first dollar to the finished work.", False),
   ("donate", "donate", "Donate | Jasmine Initiative",
    "Fund the work. Jasmine Initiative Inc is a 501(c)(3) public charity.", False),
+  ("contact", "contact", "Contact | Jasmine Initiative",
+   "Questions, press, partnerships, or a note about a gift. Contact Jasmine Initiative.", False),
 ]
 HREF = {"home": "", "initiative-one": "initiative-001/", "initiative-two": "initiative-002/",
-        "initiative-three": "initiative-003/", "about": "about/", "donate": "donate/"}
+        "initiative-three": "initiative-003/", "about": "about/", "donate": "donate/", "contact": "contact/"}
 FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%230A0A0A'/%3E"
            "%3Cg fill='%23E02020'%3E%3Cellipse cx='20' cy='10' rx='4' ry='8'/%3E%3Cellipse cx='20' cy='10' rx='4' ry='8' transform='rotate(45 20 20)'/%3E"
            "%3Cellipse cx='20' cy='10' rx='4' ry='8' transform='rotate(90 20 20)'/%3E%3Cellipse cx='20' cy='10' rx='4' ry='8' transform='rotate(135 20 20)'/%3E"
@@ -65,7 +67,7 @@ def fix_links(html, prefix, current=None, absolute=False):
         key = m.group(1)
         base = "/" if absolute else (prefix or "./")
         return 'href="%s"' % (base + HREF[key] if absolute else (prefix + HREF[key] or "./"))
-    html = re.sub(r'href="#(home|initiative-one|initiative-two|initiative-three|about|donate)"', sub, html)
+    html = re.sub(r'href="#(home|initiative-one|initiative-two|initiative-three|about|donate|contact)"', sub, html)
     if current:
         target = ("/" if absolute else (prefix or "./")) if current == "home" else None
         want = (prefix + HREF[current]) or "./"

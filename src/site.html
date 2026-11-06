@@ -22,6 +22,16 @@
 .give dbox-widget{display:block;min-height:420px}
 .give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
 .give-note a{text-decoration:underline;text-underline-offset:3px}
+.cform{display:grid;gap:18px}
+.cform .fld{display:grid;gap:8px}
+.cform label{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+.cform input,.cform textarea{font:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:0;padding:14px 14px;width:100%;min-height:52px}
+.cform textarea{resize:vertical;min-height:150px}
+.cform .btn{justify-self:start}
+.cform .btn[disabled]{opacity:.6;cursor:default}
+.cform .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cform-status{font-family:var(--mono);font-size:.8rem;line-height:1.7;margin:0}
+.cform-status a{text-decoration:underline;text-underline-offset:3px}
 [hidden]{display:none!important}
   *,*::before,*::after{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
@@ -213,6 +223,7 @@
   <a class="big" href="#initiative-two" data-nav>Initiative 002</a>
   <a class="big" href="#initiative-three" data-nav>Initiative 003</a>
   <a class="big" href="#about" data-nav>About</a>
+  <a class="big" href="#contact" data-nav>Contact</a>
   <a class="big" href="#donate" data-nav>Donate</a>
   <div class="follow">
     <p class="mono" style="margin:0 0 10px">Follow along</p>
@@ -266,8 +277,8 @@
           <div class="c-body">
             <div class="c-num"><span class="lab">Initiative</span><span class="n">002</span></div>
             <h3>Announcing soon</h3>
-            <span class="status"><i aria-hidden="true"></i>Work has begun</span>
-            <p>Punjab, Pakistan. Work has begun. Details soon.</p>
+            <span class="status"><i aria-hidden="true"></i>Already started</span>
+            <p>Punjab, Pakistan. Already started. Details soon.</p>
             <span class="go">What we can say so far &rarr;</span>
           </div>
         </a>
@@ -380,7 +391,7 @@
   <section class="sec" style="border-top:0">
     <div class="wrap">
       <p class="eyebrow">Initiative 002</p>
-      <h1 class="h1">Already <em>underway.</em></h1>
+      <h1 class="h1">Already <em>started.</em></h1>
       <p class="lede">We started a new project in a village in Punjab, Pakistan. More information will be posted soon.</p>
     </div>
   </section>
@@ -514,6 +525,35 @@
   </section>
 </main>
 
+<!-- CONTACT -->
+<main id="view-contact" data-view="contact" hidden>
+  <section class="sec" style="border-top:0">
+    <div class="wrap two give-grid">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h1 class="h1">Get in <em>touch.</em></h1>
+        <p class="lede">Questions, press, partnerships, or a note about a gift. Send us a message and it goes straight to our inbox.</p>
+        <p class="copy" style="font-family:var(--mono);font-size:.85rem;line-height:1.9;margin-top:28px">
+          <a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a><br>
+          Jasmine Initiative Inc<br>PO Box 72012<br>Marietta, GA 30007
+        </p>
+      </div>
+      <div class="give">
+        <form class="cform" data-contact novalidate>
+          <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <input type="hidden" name="t" value="">
+          <div class="fld"><label for="cf-name">Name</label><input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120"></div>
+          <div class="fld"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="200"></div>
+          <div class="fld"><label for="cf-msg">Message</label><textarea id="cf-msg" name="message" rows="6" required maxlength="4000"></textarea></div>
+          <button class="btn" type="submit">Send message</button>
+          <p class="cform-status" role="status" aria-live="polite" hidden></p>
+        </form>
+        <p class="give-note" data-contact-off hidden>The form is not live yet. Please email <a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a>.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
 </div>
 
 <footer class="foot">
@@ -534,6 +574,7 @@
       <a href="#initiative-two" data-nav>Initiative 002</a>
       <a href="#initiative-three" data-nav>Initiative 003</a>
       <a href="#about" data-nav>About</a>
+      <a href="#contact" data-nav>Contact</a>
       <a href="#donate" data-nav>Donate</a>
     </nav>
     <p class="dedication">For my first love, the woman who taught me empathy, selflessness, and humanity: my beautiful mother.</p>
@@ -586,8 +627,29 @@
   paintLiters();
   setInterval(paintLiters, 60000);
 
+  // Contact form posts to a Google Apps Script web app (runs in our own Google account). Paste its URL here.
+  var CONTACT_ENDPOINT = "";
+  var cf = document.querySelector("[data-contact]");
+  if (cf) {
+    var cfOff = document.querySelector("[data-contact-off]");
+    if (!CONTACT_ENDPOINT) { cf.hidden = true; if (cfOff) cfOff.hidden = false; }
+    var cfT = cf.querySelector('[name="t"]'); if (cfT) cfT.value = String(Date.now());
+    var cfS = cf.querySelector(".cform-status"), cfB = cf.querySelector("button[type=submit]");
+    function cfSay(msg, html){ cfS.hidden = false; if (html) cfS.innerHTML = msg; else cfS.textContent = msg; }
+    cf.addEventListener("submit", function(e){
+      e.preventDefault();
+      var d = new FormData(cf), name = (d.get("name")||"").trim(), email = (d.get("email")||"").trim(), msg = (d.get("message")||"").trim();
+      if (!name || !msg || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { cfSay("Please fill in your name, a valid email, and a message."); return; }
+      cfB.disabled = true; cfSay("Sending...");
+      fetch(CONTACT_ENDPOINT, { method: "POST", mode: "no-cors", body: new URLSearchParams(d) })
+        .then(function(){ cf.reset(); if (cfT) cfT.value = String(Date.now()); cfSay("Thank you. Your message is on its way to our inbox."); })
+        .catch(function(){ cfSay('Something went wrong. Please email <a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a>.', true); })
+        .then(function(){ cfB.disabled = false; });
+    });
+  }
 
-  var VIEWS = ["home","initiative-one","initiative-two","initiative-three","about","donate"];
+
+  var VIEWS = ["home","initiative-one","initiative-two","initiative-three","about","donate","contact"];
   var DARK = ["initiative-one","initiative-two","initiative-three"];
   var btn = document.getElementById("menuBtn"), menu = document.getElementById("menu");
 
