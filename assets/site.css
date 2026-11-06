@@ -87,6 +87,21 @@
   /* Cards */
   .cards{display:grid;gap:16px;grid-template-columns:1fr}
   @media(min-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+  .h2 em{font-style:normal;color:var(--red)}
+  .card.c{padding:0;gap:0;overflow:hidden}
+  .c-media{position:relative;aspect-ratio:4/3;background:#111;overflow:hidden;display:grid;place-items:center}
+  .c-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 50%;display:block}
+  .c-media.dim img{filter:grayscale(1) blur(7px) brightness(.45);transform:scale(1.12)}
+  .c-media .mark{width:34%;height:auto;opacity:.22;position:relative}
+  .c-tag{position:relative;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
+  .c-body{display:flex;flex-direction:column;gap:12px;padding:24px 24px 28px;flex:1}
+  .c-num{display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
+  .c-num .lab{font-family:var(--mono);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--paper)}
+  .c-num .n{font-family:var(--display);font-size:5rem;line-height:.85;letter-spacing:.02em;color:var(--red)}
+  .card.c h3{font-size:2.3rem}
+  .status{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
+  .status i{width:9px;height:9px;border-radius:50%;background:var(--red);flex:none}
+  .status i.off{background:transparent;border:1.5px solid #8F8B83}
   .card{display:flex;flex-direction:column;gap:14px;min-width:0;background:var(--black);color:var(--paper);--fg:var(--paper);--muted:#8F8B83;--line:#262626;padding:28px 24px;border:1px solid #1f1f1f;text-decoration:none}
   .card:hover{border-color:#444}
   .card h3{font-family:var(--display);font-weight:400;font-size:3.2rem;line-height:1;letter-spacing:.04em;margin:0}

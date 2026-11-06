@@ -93,6 +93,21 @@
   /* Cards */
   .cards{display:grid;gap:16px;grid-template-columns:1fr}
   @media(min-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+  .h2 em{font-style:normal;color:var(--red)}
+  .card.c{padding:0;gap:0;overflow:hidden}
+  .c-media{position:relative;aspect-ratio:4/3;background:#111;overflow:hidden;display:grid;place-items:center}
+  .c-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 50%;display:block}
+  .c-media.dim img{filter:grayscale(1) blur(7px) brightness(.45);transform:scale(1.12)}
+  .c-media .mark{width:34%;height:auto;opacity:.22;position:relative}
+  .c-tag{position:relative;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
+  .c-body{display:flex;flex-direction:column;gap:12px;padding:24px 24px 28px;flex:1}
+  .c-num{display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
+  .c-num .lab{font-family:var(--mono);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--paper)}
+  .c-num .n{font-family:var(--display);font-size:5rem;line-height:.85;letter-spacing:.02em;color:var(--red)}
+  .card.c h3{font-size:2.3rem}
+  .status{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
+  .status i{width:9px;height:9px;border-radius:50%;background:var(--red);flex:none}
+  .status i.off{background:transparent;border:1.5px solid #8F8B83}
   .card{display:flex;flex-direction:column;gap:14px;min-width:0;background:var(--black);color:var(--paper);--fg:var(--paper);--muted:#8F8B83;--line:#262626;padding:28px 24px;border:1px solid #1f1f1f;text-decoration:none}
   .card:hover{border-color:#444}
   .card h3{font-family:var(--display);font-weight:400;font-size:3.2rem;line-height:1;letter-spacing:.04em;margin:0}
@@ -233,36 +248,38 @@
   <section class="sec">
     <div class="wrap">
       <p class="eyebrow">The work</p>
-      <h2 class="h2">Our work is built on initiatives.</h2>
+      <h2 class="h2">Our work is built on <em>initiatives.</em></h2>
       <p class="copy">Each initiative has one specific goal or target. Breaking the work down this way helps us reach those targets, and it lets us track and allocate every dollar with full transparency. We use every resource as efficiently as we can, out of respect for our donors and the communities we serve.</p>
       <div class="cards" style="margin-top:36px">
-        <a class="card" href="#initiative-one" data-nav>
-          <span class="mono">Initiative 001</span>
-          <h3>Clean water</h3>
-          <p>Clean water access in Pakistan, documented on camera and tracked to the dollar.</p>
-          <span class="go">See the work &rarr;</span>
+        <a class="card c" href="#initiative-one" data-nav>
+          <div class="c-media"><img src="img/well-1-plaque-wide.jpg" width="1600" height="900" loading="lazy" alt="Chuck standing beside the first well with the Initiative 001 plaque mounted on it"></div>
+          <div class="c-body">
+            <div class="c-num"><span class="lab">Initiative</span><span class="n">001</span></div>
+            <h3>Clean water</h3>
+            <span class="status"><i aria-hidden="true"></i>Ongoing</span>
+            <p>Clean water access in Pakistan, documented on camera and tracked to the dollar.</p>
+            <span class="go">See the work &rarr;</span>
+          </div>
         </a>
-        <a class="card" href="#initiative-two" data-nav>
-          <span class="mono">Initiative 002</span>
-          <h3>Underway</h3>
-          <dl class="rd">
-            <div style="display:contents"><dt>Where</dt><dd>Punjab, Pakistan</dd></div>
-            <div style="display:contents"><dt>Village</dt><dd><span class="x" style="--w:9ch"></span></dd></div>
-            <div style="display:contents"><dt>Project</dt><dd><span class="x" style="--w:12ch"></span></dd></div>
-            <div style="display:contents"><dt>Reveal</dt><dd>Soon</dd></div>
-          </dl>
-          <span class="go">What we can say so far &rarr;</span>
+        <a class="card c" href="#initiative-two" data-nav>
+          <div class="c-media"><img src="img/initiative-002-teaser.jpg" width="800" height="600" loading="lazy" alt=""><span class="c-tag">Reveal soon</span></div>
+          <div class="c-body">
+            <div class="c-num"><span class="lab">Initiative</span><span class="n">002</span></div>
+            <h3>Announcing soon</h3>
+            <span class="status"><i aria-hidden="true"></i>Work has begun</span>
+            <p>Punjab, Pakistan. Work has begun. Details soon.</p>
+            <span class="go">What we can say so far &rarr;</span>
+          </div>
         </a>
-        <a class="card" href="#initiative-three" data-nav>
-          <span class="mono">Initiative 003</span>
-          <h3>In discussion</h3>
-          <dl class="rd">
-            <div style="display:contents"><dt>Where</dt><dd><span class="x" style="--w:10ch"></span></dd></div>
-            <div style="display:contents"><dt>Project</dt><dd><span class="x" style="--w:12ch"></span></dd></div>
-            <div style="display:contents"><dt>Status</dt><dd>Talks underway</dd></div>
-            <div style="display:contents"><dt>Update</dt><dd>Soon</dd></div>
-          </dl>
-          <span class="go">What we can say so far &rarr;</span>
+        <a class="card c" href="#initiative-three" data-nav>
+          <div class="c-media"><img src="img/initiative-003-map.jpg" width="800" height="600" loading="lazy" alt=""><span class="c-tag">Location withheld</span></div>
+          <div class="c-body">
+            <div class="c-num"><span class="lab">Initiative</span><span class="n">003</span></div>
+            <h3>Finalizing details</h3>
+            <span class="status"><i class="off" aria-hidden="true"></i>Final stages</span>
+            <p>Final stages before we begin. Details soon.</p>
+            <span class="go">What we can say so far &rarr;</span>
+          </div>
         </a>
       </div>
     </div>
@@ -397,8 +414,8 @@
   <section class="sec" style="border-top:0">
     <div class="wrap">
       <p class="eyebrow">Initiative 003</p>
-      <h1 class="h1">Talks are <em>underway.</em></h1>
-      <p class="lede">We've begun discussions for Initiative 003. We'll have an update soon.</p>
+      <h1 class="h1">Finalizing <em>details.</em></h1>
+      <p class="lede">We're in the final stages before we begin Initiative 003. We'll have an update soon.</p>
     </div>
   </section>
   <section class="sec">
@@ -408,7 +425,7 @@
         <div style="display:contents"><dt>Country</dt><dd><span class="x" style="--w:10ch"></span></dd></div>
         <div style="display:contents"><dt>Partners</dt><dd><span class="x" style="--w:14ch"></span></dd></div>
         <div style="display:contents"><dt>Project</dt><dd><span class="x" style="--w:16ch"></span></dd></div>
-        <div style="display:contents"><dt>Status</dt><dd>In discussion</dd></div>
+        <div style="display:contents"><dt>Status</dt><dd>Final stages</dd></div>
         <div style="display:contents"><dt>Update</dt><dd>Soon</dd></div>
       </dl>
     </div>
