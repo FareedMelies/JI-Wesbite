@@ -11,7 +11,8 @@
   }
   body.dark{ --bg:var(--black); --fg:var(--paper); --muted:#A19D95; --line:#262626; --card:#121212; }
 
-  .give{max-width:560px;margin-top:32px}
+  .give{max-width:560px;width:100%}
+@media(min-width:860px){.give-grid{grid-template-columns:1fr minmax(0,520px);align-items:start}.give{justify-self:end}}
 .give dbox-widget{display:block;min-height:420px}
 .give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
 .give-note a{text-decoration:underline;text-underline-offset:3px}

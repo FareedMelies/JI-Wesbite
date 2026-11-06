@@ -17,7 +17,8 @@
   }
   body.dark{ --bg:var(--black); --fg:var(--paper); --muted:#A19D95; --line:#262626; --card:#121212; }
 
-  .give{max-width:560px;margin-top:32px}
+  .give{max-width:560px;width:100%}
+@media(min-width:860px){.give-grid{grid-template-columns:1fr minmax(0,520px);align-items:start}.give{justify-self:end}}
 .give dbox-widget{display:block;min-height:420px}
 .give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
 .give-note a{text-decoration:underline;text-underline-offset:3px}
@@ -461,10 +462,12 @@
 <!-- DONATE -->
 <main id="view-donate" data-view="donate" hidden>
   <section class="sec" style="border-top:0">
-    <div class="wrap">
-      <p class="eyebrow">Give</p>
-      <h1 class="h1">Fund the <em>work.</em></h1>
-      <p class="lede">Every gift goes to Jasmine Initiative Inc, a registered 501(c)(3). You can watch where it goes.</p>
+    <div class="wrap two give-grid">
+      <div>
+        <p class="eyebrow">Give</p>
+        <h1 class="h1">Fund the <em>work.</em></h1>
+        <p class="lede">Every gift goes to Jasmine Initiative Inc, a registered 501(c)(3). You can watch where it goes.</p>
+      </div>
       <div class="give">
         <script type="module" src="https://donorbox.org/widgets.js" async></script>
         <dbox-widget campaign="donate-to-jasmine-initiative" type="donation_form" enable-auto-scroll="true"></dbox-widget>
