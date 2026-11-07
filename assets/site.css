@@ -15,6 +15,8 @@
 @media(min-width:860px){.give-grid{grid-template-columns:1fr minmax(0,520px);align-items:start}.give{justify-self:end}}
 .give{position:relative}
 .give dbox-widget{display:block;min-height:420px;position:relative}
+.give-promise{margin:22px 0 0;padding-left:16px;border-left:3px solid var(--red);font-size:1rem;line-height:1.6;max-width:34em}
+.give-promise strong{font-weight:700}
 .give-loading{position:absolute;top:24px;left:0;right:0;margin:0;font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted,#555)}
 .give-loading[hidden]{display:none}
 .give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
