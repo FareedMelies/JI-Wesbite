@@ -42,27 +42,10 @@
   paintLiters();
   setInterval(paintLiters, 60000);
 
-  // Contact form posts to a Google Apps Script web app (runs in our own Google account). Paste its URL here.
-  var CONTACT_ENDPOINT = "";
-  var cf = document.querySelector("[data-contact]");
-  if (cf) {
-    var cfOff = document.querySelector("[data-contact-off]");
-    if (!CONTACT_ENDPOINT) { cf.hidden = true; if (cfOff) cfOff.hidden = false; }
-    var cfT = cf.querySelector('[name="t"]'); if (cfT) cfT.value = String(Date.now());
-    var cfS = cf.querySelector(".cform-status"), cfB = cf.querySelector("button[type=submit]");
-    function cfSay(msg, html){ cfS.hidden = false; if (html) cfS.innerHTML = msg; else cfS.textContent = msg; }
-    cf.addEventListener("submit", function(e){
-      e.preventDefault();
-      var d = new FormData(cf), name = (d.get("name")||"").trim(), email = (d.get("email")||"").trim(), msg = (d.get("message")||"").trim();
-      if (!name || !msg || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { cfSay("Please fill in your name, a valid email, and a message."); return; }
-      cfB.disabled = true; cfSay("Sending...");
-      fetch(CONTACT_ENDPOINT, { method: "POST", mode: "no-cors", body: new URLSearchParams(d) })
-        .then(function(){ cf.reset(); if (cfT) cfT.value = String(Date.now()); cfSay("Thank you. Your message is on its way to our inbox."); })
-        .catch(function(){ cfSay('Something went wrong. Please email <a href="mailto:hello@jasmineinitiative.org">hello@jasmineinitiative.org</a>.', true); })
-        .then(function(){ cfB.disabled = false; });
-    });
-  }
-
+  document.querySelectorAll("a.em[data-em]").forEach(function(a){
+    var t = a.getAttribute("data-em").replace(/[a-z]/gi, function(c){ var b = c <= "Z" ? 65 : 97; return String.fromCharCode((c.charCodeAt(0) - b + 13) % 26 + b); });
+    a.href = "mailto:" + t; a.textContent = t; a.removeAttribute("data-em");
+  });
 
   var btn = document.getElementById("menuBtn"), menu = document.getElementById("menu");
   function setMenu(open){

@@ -16,16 +16,16 @@
 .give dbox-widget{display:block;min-height:420px}
 .give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
 .give-note a{text-decoration:underline;text-underline-offset:3px}
-.cform{display:grid;gap:18px}
-.cform .fld{display:grid;gap:8px}
-.cform label{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
-.cform input,.cform textarea{font:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:0;padding:14px 14px;width:100%;min-height:52px}
-.cform textarea{resize:vertical;min-height:150px}
-.cform .btn{justify-self:start}
-.cform .btn[disabled]{opacity:.6;cursor:default}
-.cform .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.cform-status{font-family:var(--mono);font-size:.8rem;line-height:1.7;margin:0}
-.cform-status a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:859px){
+  .cards .card.c{display:grid;grid-template-columns:112px 1fr;align-items:stretch}
+  .cards .card.c .c-media{aspect-ratio:auto;min-height:132px}
+  .cards .card.c:first-child .c-media img{object-position:80% 50%}
+  .cards .card.c .c-tag,.cards .card.c .c-body p,.cards .card.c .go{display:none}
+  .cards .card.c .c-body{padding:14px 16px;gap:6px;justify-content:center}
+  .cards .card.c .c-num{flex-direction:row;align-items:baseline;gap:10px;margin:0}
+  .cards .card.c .c-num .n{font-size:2.2rem}
+  .cards .card.c h3{font-size:1.45rem;line-height:1.05}
+}
 [hidden]{display:none!important}
   *,*::before,*::after{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
