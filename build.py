@@ -85,7 +85,7 @@ def head(title, desc, prefix, path, dark_img=None, absolute=False):
           '<meta name="twitter:card" content="summary_large_image">']
     if SITE:
         og.append('<meta property="og:url" content="%s">' % url)
-        og.append('<meta property="og:image" content="%s/img/share.jpg">' % SITE)
+        og.append('<meta property="og:image" content="%s/img/share-flower.jpg">' % SITE)
         og.append('<link rel="canonical" href="%s">' % url)
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
