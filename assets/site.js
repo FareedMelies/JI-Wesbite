@@ -47,6 +47,13 @@
     a.href = "mailto:" + t; a.textContent = t; a.removeAttribute("data-em");
   });
 
+  var gl = document.querySelector(".give-loading"), gw = document.querySelector("dbox-widget");
+  if (gl && gw) {
+    var hideGl = function(){ gl.hidden = true; };
+    var tryHide = function(){ if ((gw.shadowRoot && gw.shadowRoot.childNodes.length) || gw.querySelector("iframe") || gw.offsetHeight > 460) { hideGl(); return true; } return false; };
+    var n = 0, iv = setInterval(function(){ if (tryHide() || ++n > 60) { clearInterval(iv); if (n > 60) hideGl(); } }, 500);
+  }
+
   var btn = document.getElementById("menuBtn"), menu = document.getElementById("menu");
   function setMenu(open){
     menu.hidden = !open;

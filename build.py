@@ -110,7 +110,10 @@ for key, folder, title, desc, dark in PAGES:
     body = (sprite + '<a class="skip" href="#main">Skip to content</a>\n' + header + "\n" + main + "\n" + footer +
             '<script src="%sassets/site.js?v=%s"></script>\n' % (prefix, VER))
     body = fix_links(body, prefix, current=key)
-    page = head(title, desc, prefix, folder) + '<body%s>\n%s</body>\n</html>\n' % (' class="dark"' if dark else "", body)
+    hd = head(title, desc, prefix, folder)
+    if key == "donate":
+        hd = hd.replace('</head>', '<link rel="preconnect" href="https://donorbox.org" crossorigin>\n<link rel="dns-prefetch" href="https://donorbox.org">\n</head>')
+    page = hd + '<body%s>\n%s</body>\n</html>\n' % (' class="dark"' if dark else "", body)
     write((folder + "/" if folder else "") + "index.html", page)
 
 # 404 (served from any path, so root-absolute URLs)

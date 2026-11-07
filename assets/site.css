@@ -13,7 +13,10 @@
 
   .give{max-width:560px;width:100%}
 @media(min-width:860px){.give-grid{grid-template-columns:1fr minmax(0,520px);align-items:start}.give{justify-self:end}}
-.give dbox-widget{display:block;min-height:420px}
+.give{position:relative}
+.give dbox-widget{display:block;min-height:420px;position:relative}
+.give-loading{position:absolute;top:24px;left:0;right:0;margin:0;font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted,#555)}
+.give-loading[hidden]{display:none}
 .give-note{font-family:var(--mono);font-size:.74rem;line-height:1.7;margin:18px 0 0;color:var(--muted,#555)}
 .give-note a{text-decoration:underline;text-underline-offset:3px}
 @media(max-width:859px){
