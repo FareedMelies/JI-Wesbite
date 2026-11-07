@@ -21,6 +21,8 @@
 @media(min-width:860px){.give-grid{grid-template-columns:1fr minmax(0,520px);align-items:start}.give{justify-self:end}}
 .give{position:relative}
 .give dbox-widget{display:block;min-height:420px;position:relative}
+@media(max-width:859px){.give-lede{display:none}.give-promise{margin-top:18px}}
+@media(min-width:860px){.m-only{display:none}}
 .give-promise{margin:22px 0 0;padding-left:16px;border-left:3px solid var(--red);font-size:1rem;line-height:1.6;max-width:34em}
 .give-promise strong{font-weight:700}
 .give-loading{position:absolute;top:24px;left:0;right:0;margin:0;font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted,#555)}
@@ -495,14 +497,14 @@
       <div>
         <p class="eyebrow">Give</p>
         <h1 class="h1">Fund the <em>work.</em></h1>
-        <p class="lede">Every gift goes to Jasmine Initiative Inc, a registered 501(c)(3). You can watch where it goes.</p>
+        <p class="lede give-lede">Every gift goes to Jasmine Initiative Inc, a registered 501(c)(3). You can watch where it goes.</p>
         <p class="give-promise"><strong>Currently none of your gift goes to overhead.</strong> I personally cover all of it, including travel, lodging, legal and card fees, so 100% of your gift serves the program and the communities Jasmine Initiative works in.</p>
       </div>
       <div class="give">
         <script type="module" src="https://donorbox.org/widgets.js" async></script>
         <p class="give-loading" aria-live="polite">Loading the donation form&hellip;</p>
         <dbox-widget campaign="donate-to-jasmine-initiative" type="donation_form" enable-auto-scroll="true"></dbox-widget>
-        <p class="give-note">To change or cancel a monthly gift, use Donor Login in the form or email <a class="em" data-em="uryyb@wnfzvarvavgvngvir.bet">hello [at] jasmineinitiative [dot] org</a>. If the form does not load, <a href="https://donorbox.org/donate-to-jasmine-initiative" target="_blank" rel="noopener noreferrer">give here instead</a>.</p>
+        <p class="give-note"><span class="m-only">Jasmine Initiative Inc is a registered 501(c)(3). </span>To change or cancel a monthly gift, use Donor Login in the form or email <a class="em" data-em="uryyb@wnfzvarvavgvngvir.bet">hello [at] jasmineinitiative [dot] org</a>. If the form does not load, <a href="https://donorbox.org/donate-to-jasmine-initiative" target="_blank" rel="noopener noreferrer">give here instead</a>.</p>
       </div>
     </div>
   </section>
