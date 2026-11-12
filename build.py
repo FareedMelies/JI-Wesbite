@@ -43,7 +43,7 @@ PAGES = [
   ("initiative-one", "initiative-001", "Initiative 001: Clean water, documented | Jasmine Initiative",
    "Our first initiative puts clean water access in Pakistan, on camera and tracked to the dollar.", True),
   ("initiative-two", "initiative-002", "Initiative 002 | Jasmine Initiative",
-   "Initiative 002: already started. More soon.", True),
+   "Initiative 002: a school for children in a village in Pakistan, many of whom are orphans.", True),
   ("initiative-three", "initiative-003", "Initiative 003 | Jasmine Initiative",
    "Initiative 003 is in its final stages before we begin. More soon.", True),
   ("about", "about", "About | Jasmine Initiative",
